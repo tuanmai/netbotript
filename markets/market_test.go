@@ -14,7 +14,7 @@ func TestCanGetMarkets(t *testing.T) {
 
 func TestSpotsNotEmpty(t *testing.T) {
   spots, _ := GetSpots()
-  if len(spots) > 0 {
+  if len(spots) == 0 {
     t.Errorf("Spots is empty")
   }
 }
