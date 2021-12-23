@@ -1,8 +1,6 @@
 package markets
 
 import (
-	"fmt"
-	"log"
 	"os"
 
 	"github.com/go-numb/go-ftx/auth"
@@ -10,20 +8,19 @@ import (
 	"github.com/go-numb/go-ftx/rest/public/markets"
 )
 
-func GetSpots() []markets.Market {
+func GetSpots() ([]markets.Market, error) {
 	client := rest.New(auth.New(os.Getenv("FTX_KEY"), os.Getenv("FTX_SECRET")))
-        p, err := client.Markets(&markets.RequestForMarkets{})
-        products := *p
+	p, err := client.Markets(&markets.RequestForMarkets{})
+	products := *p
 	if err != nil {
-		log.Fatal("Cannot call ftx api", err)
+		return make([]markets.Market, 0), err
 	}
-        var spots []markets.Market
-        for _, product := range products {
-          if product.Type == "spot" {
-            spots = append(spots, product)
-          }
+	var spots []markets.Market
+	for _, product := range products {
+		if product.Type == "spot" {
+			spots = append(spots, product)
+		}
 
-        }
-        fmt.Println(len(spots))
-	return spots
+	}
+	return spots, nil
 }
