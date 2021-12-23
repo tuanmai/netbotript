@@ -8,8 +8,11 @@ import (
 	"github.com/go-numb/go-ftx/rest/public/markets"
 )
 
-func GetSpots() ([]markets.Market, error) {
-	client := rest.New(auth.New(os.Getenv("FTX_KEY"), os.Getenv("FTX_SECRET")))
+type FXTClient interface {
+  Markets(* markets.RequestForMarkets) (*markets.ResponseForMarkets, error)
+}
+
+func GetSpots(client FXTClient) ([]markets.Market, error) {
 	p, err := client.Markets(&markets.RequestForMarkets{})
 	products := *p
 	if err != nil {
@@ -23,4 +26,9 @@ func GetSpots() ([]markets.Market, error) {
 
 	}
 	return spots, nil
+}
+
+func CreateFTXClient() FXTClient {
+  client := rest.New(auth.New(os.Getenv("FTX_KEY"), os.Getenv("FTX_SECRET")))
+  return client
 }

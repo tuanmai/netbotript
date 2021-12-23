@@ -13,6 +13,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-        markets.GetSpots()
+        markets.GetSpots(markets.CreateFTXClient())
 	fmt.Println("App started")
 }
