@@ -1,9 +1,18 @@
 package main
 
 import (
-  "fmt"
+	"fmt"
+	"log"
+	"netbotript/markets"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-  fmt.Println("App started")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+        markets.GetSpots()
+	fmt.Println("App started")
 }
